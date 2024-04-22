@@ -245,8 +245,8 @@ export default function Game() {
     await axios.post('/api/msg', { text, roomId, channel })
   }
   const dropPiece = async (from: string, to: string, piece: undefined | null | string) => {
-    if (playerState !== playerEnum.PlayerW && playerState !== playerEnum.PlayerB) return;
-    if (piece && piece[0] !== (playerState == playerEnum.PlayerW ? "w" : "b")) return;
+    if (playerState !== playerEnum.PlayerW && playerState !== playerEnum.PlayerB) return false;
+    if (piece && piece[0] !== (playerState == playerEnum.PlayerW ? "w" : "b")) return false;
 
     const gameCopyable = game?.main;
     const move_ = {
