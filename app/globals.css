@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .trans {
+    @apply transition duration-150 ease-in-out
+  }
+
+  .disabledBtn {
+    @apply saturate-0 pointer-events-none brightness-[.80]
+  }
+}
+
+
+
+
+
+.ridScrollbar {
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.ridScrollbar::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
+}
+
+
+  /* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
+  /** {
+  scrollbar-width: thin;
+  scrollbar-color: #717171 #DFE9EB;
+}*/
+
+  /* Chrome, Edge and Safari */
+  .simpleScroll::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+  }
+
+  .simpleScroll::-webkit-scrollbar-track {
+    background-color: #ffffff0e;
+  }
+
+  .simpleScroll::-webkit-scrollbar-thumb {
+    border-radius: 16px;
+    background-color: #606976;
+  }
+
+
+
+
+
+.loader {
+  border: 5px solid #ffffff33;
+  border-bottom-color: #88c3e3;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/Satoshi_Complete/Satoshi_Complete/Fonts/OTF/Satoshi-Regular.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/Satoshi_Complete/Satoshi_Complete/Fonts/OTF/Satoshi-Italic.otf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/Satoshi_Complete/Satoshi_Complete/Fonts/OTF/Satoshi-Black.otf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/Satoshi_Complete/Satoshi_Complete/Fonts/OTF/Satoshi-Bold.otf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/Satoshi_Complete/Satoshi_Complete/Fonts/OTF/Satoshi-Medium.otf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("/Satoshi_Complete/Satoshi_Complete/Fonts/OTF/Satoshi-BlackItalic.otf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+* {
+  font-family: 'satoshi';
+}
+
+@layer components {}
+
+@layer utilities {}
