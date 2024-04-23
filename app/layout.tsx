@@ -89,6 +89,6 @@ const MyComponent = ({
   );
 }
 
-export { RootContext };
 export default MyComponent;
+export { RootContext };
 
