@@ -15,11 +15,11 @@ import { Nav } from "@/components/nav";
 
 const RootContext = createContext<any>("");
 
-export default function ({
+const MyComponent = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
 
   const [user, setUser] = useState<any>(null)
   const [load, setLoad] = useState<boolean>(true)
@@ -90,3 +90,5 @@ export default function ({
 }
 
 export { RootContext };
+export default MyComponent;
+
