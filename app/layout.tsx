@@ -15,7 +15,7 @@ import { Nav } from "@/components/nav";
 
 const RootContext = createContext<any>("");
 
-export default function RootLayout({
+export default function ({
   children,
 }: Readonly<{
   children: React.ReactNode;
