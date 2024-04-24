@@ -15,11 +15,11 @@ import { Nav } from "@/components/nav";
 
 const RootContext = createContext<any>("");
 
-const MyComponent = ({
+export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) => {
+}) {
 
   const [user, setUser] = useState<any>(null)
   const [load, setLoad] = useState<boolean>(true)
@@ -89,6 +89,5 @@ const MyComponent = ({
   );
 }
 
-export default MyComponent;
-export { RootContext };
 
+export {RootContext};
