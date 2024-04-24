@@ -60,6 +60,7 @@ export default function RootLayout({
     })
   }, [])
 
+  
   const pathname = usePathname();
 
   return (

@@ -395,7 +395,7 @@ export default function Game() {
               </div>
             </div>
           )}
-          <Chessboard boardOrientation={playerState == playerEnum.PlayerB ? "black" : "white"} position={game?.main?.fen()} onPieceDrop={dropPiece as any} boardWidth={500} customPieces={pieceComponents} customBoardStyle={{ borderRadius: '2px', boxShadow: "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px" }} customLightSquareStyle={{ backgroundColor: "#f3f4f6" }} customDarkSquareStyle={{ backgroundColor: "#60a5fa" }} customNotationStyle={{ fontWeight: '800', fontFamily: "satoshi" }} />
+          <Chessboard animationDuration={0} boardOrientation={playerState == playerEnum.PlayerB ? "black" : "white"} position={game?.main?.fen()} onPieceDrop={dropPiece as any} boardWidth={500} customPieces={pieceComponents} customBoardStyle={{ borderRadius: '2px', boxShadow: "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px" }} customLightSquareStyle={{ backgroundColor: "#f3f4f6" }} customDarkSquareStyle={{ backgroundColor: "#60a5fa" }} customNotationStyle={{ fontWeight: '800', fontFamily: "satoshi" }} />
           {/* <div className="w-full h-[500px] space-y-2 ridScrollbar overflow-y-scroll">
             {(moveList?.map((txt: any, index: any) => {
               console.log(txt)
