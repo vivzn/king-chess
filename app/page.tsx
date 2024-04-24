@@ -6,11 +6,11 @@ import { signInWithPopup, GoogleAuthProvider, signInWithRedirect, getRedirectRes
 import { getRedirectError } from "next/dist/client/components/redirect";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
-import { RootContext } from "./layout";
 import { useRouter } from "next/navigation";
 import { Dashboard } from "@/components/dashboard";
 import { ArrowLeftCircleIcon, BookmarkIcon, CubeTransparentIcon, EllipsisHorizontalCircleIcon, InformationCircleIcon, WrenchScrewdriverIcon } from "@heroicons/react/24/outline";
 import { SparklesIcon } from "@heroicons/react/24/solid";
+import { RootContext } from "@/context";
 
 export default function Home() {
   const [load, setLoad] = useContext<any>(RootContext).load;

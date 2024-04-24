@@ -1,4 +1,4 @@
-import { RootContext } from '@/app/layout';
+import { RootContext } from '@/context';
 import { auth as authFB } from '@/firebase';
 import { ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ChatBubbleOvalLeftIcon, CogIcon, InboxStackIcon } from '@heroicons/react/24/outline';
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';

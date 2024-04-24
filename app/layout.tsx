@@ -12,8 +12,7 @@ import { auth as authFB } from "@/firebase";
 import Loading from "@/components/loading";
 import axios from "axios";
 import { Nav } from "@/components/nav";
-
-const RootContext = createContext<any>("");
+import { RootContext } from "@/context";
 
 export default function RootLayout({
   children,
@@ -63,6 +62,8 @@ export default function RootLayout({
 
   const pathname = usePathname();
 
+  console.log(RootContext, "ie9jd")
+
   return (
     <RootContext.Provider value={{
       user: [user, setUser],
@@ -88,6 +89,3 @@ export default function RootLayout({
     </RootContext.Provider>
   );
 }
-
-
-export {RootContext};

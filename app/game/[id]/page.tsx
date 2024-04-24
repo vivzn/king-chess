@@ -10,7 +10,6 @@ import { Chess } from "chess.js";
 import { nanoid } from "nanoid";
 import Loading from "@/components/loading";
 import Error from "@/components/error";
-import { RootContext } from "@/app/layout";
 import { ArrowDownIcon, ArrowsPointingOutIcon, ArrowsUpDownIcon, FlagIcon, PaperClipIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { BoltIcon, BoltSlashIcon, FlagIcon as FlagIconSolid, SpeakerWaveIcon, WrenchScrewdriverIcon } from "@heroicons/react/24/solid";
 import Tippy from "@tippyjs/react";
@@ -18,6 +17,7 @@ import MyCustomTip from "@/components/mycustomtip";
 import useSWR from "swr";
 import WaitForRival from "@/components/waitForRival";
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
+import { RootContext } from "@/context";
 
 enum playerEnum {
   Loader,

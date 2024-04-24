@@ -1,10 +1,10 @@
-import { RootContext } from '@/app/layout';
 import { AcademicCapIcon, BookmarkIcon, ChartBarIcon, CpuChipIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, PuzzlePieceIcon, SquaresPlusIcon } from '@heroicons/react/24/solid';
 import Tippy from '@tippyjs/react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import MyCustomTip from './mycustomtip';
+import { RootContext } from '@/context';
 
 export function Dashboard() {
 
