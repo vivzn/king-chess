@@ -62,8 +62,6 @@ export default function RootLayout({
 
   const pathname = usePathname();
 
-  console.log(RootContext, "ie9jd")
-
   return (
     <RootContext.Provider value={{
       user: [user, setUser],
