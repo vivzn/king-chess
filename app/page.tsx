@@ -104,7 +104,7 @@ export default function Home() {
               </div>
               <p className="font-semibold text-slate-200 text-xl">to play some chess</p>
             </div>
-            <p className="font-semibold text-gray-400 pt-8">king chess (formerly kgv chess) is an <span onClick={() => router.push("https://docs.google.com/forms/d/e/1FAIpQLSeKHf540HB4dIUFTB_RANsbEUeoB8UAn8X_UIx8s1Z5XGBEiA/viewform?usp=sf_link")} className="underline  cursor-pointer text-blue-300">open-source</span> chess website to play and learn chess.</p>
+            <p className="font-semibold text-gray-400 pt-8">king chess (formerly kgv chess) is an <span onClick={() => router.push("https://github.com/vivzn/king-chess")} className="underline  cursor-pointer text-blue-300">open-source</span> chess website to play and learn chess.</p>
             <div className="flex p-2 px-3 border-gray-600 border-2 items-center space-x-2 rounded-full mt-8">
               <div className="w-[10px] h-[10px] bg-green-400 animate-pulse rounded-full">
 
