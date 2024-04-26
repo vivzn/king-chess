@@ -13,6 +13,8 @@ import Loading from "@/components/loading";
 import axios from "axios";
 import { Nav } from "@/components/nav";
 import { RootContext } from "@/context";
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function RootLayout({
   children,
@@ -69,6 +71,8 @@ export default function RootLayout({
       load: [load, setLoad]
     }}>
       <html lang="en">
+        <Analytics />
+        <SpeedInsights/>
         <head>
           <title>king chess</title>
         </head>
