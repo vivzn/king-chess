@@ -5,7 +5,9 @@ import { pusherServer } from "@/pusherConfig"
 export async function POST(req: Request) {
   const { text, roomId, channel } = await req.json()
 
-  pusherServer.trigger(roomId, channel, text)
+
+  //ADD AWAIT HER
+  await pusherServer.trigger(roomId, channel, text)
 
   return new Response(JSON.stringify({ success: true }))
 }

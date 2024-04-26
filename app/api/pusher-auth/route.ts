@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     user_data: { user_id: id },
   }
 
-  const auth = pusherServer.authorizeChannel(
+  const auth = await pusherServer.authorizeChannel(
     socketId,
     channelName,
     presenceData
