@@ -67,18 +67,18 @@ export default function Home() {
         <div className="flex space-x-4 justify-between items-center cursor-pointer select-none">
           <div onClick={() => router.push("/")} className="flex space-x-6 items-center cursor-pointer select-none">
             <SparklesIcon className="w-[34px] h-[34px] text-blue-200" />
-            <span className="tracking-wide text-[24px] w-[155px] text-gray-200 font-bold">king chess</span>
+            <span className="tracking-wide text-[24px] w-[155px] text-slate-200 font-bold">king chess</span>
           </div>
 
           <div className="flex space-x-4 items-center">
-            <div onClick={() => router.push("https://docs.google.com/forms/d/e/1FAIpQLSeKHf540HB4dIUFTB_RANsbEUeoB8UAn8X_UIx8s1Z5XGBEiA/viewform?usp=sf_link")} className="rounded-full hover:bg-gray-600 transition duration-200 ease-in-out p-[10px] border-2 border-gray-600">
-              <InformationCircleIcon className="w-5 h-5 text-gray-500 stroke-[2]" />
+            <div onClick={() => router.push("https://docs.google.com/forms/d/e/1FAIpQLSeKHf540HB4dIUFTB_RANsbEUeoB8UAn8X_UIx8s1Z5XGBEiA/viewform?usp=sf_link")} className="rounded-full hover:bg-slate-600 transition duration-200 ease-in-out p-[10px] border-2 border-slate-600">
+              <InformationCircleIcon className="w-5 h-5 text-slate-500 stroke-[2]" />
             </div>
             <div onClick={() => {
               alert("copied to clipboard");
               navigator.clipboard.writeText(window?.location?.href)
-            }} className="rounded-full hover:bg-gray-600 transition duration-200 ease-in-out p-[10px] border-2 border-gray-600">
-              <LinkIcon className="w-5 h-5 text-gray-500 stroke-[2]" />
+            }} className="rounded-full hover:bg-slate-600 transition duration-200 ease-in-out p-[10px] border-2 border-slate-600">
+              <LinkIcon className="w-5 h-5 text-slate-500 stroke-[2]" />
             </div>
             <div onClick={signIn} className="rounded-full hover:brightness-110 trans p-[10px] px-[14px] border-[5px] hover: border-x-blue-500 border-y-transparent text-white bg-blue-400 flex items-center space-x-2">
               <ArrowLeftCircleIcon className="w-5 h-5 stroke-[2] text-blue-500" />
@@ -95,7 +95,7 @@ export default function Home() {
           </video> */}
           <div className="flex flex-col space-y-8 items-center w-fit">
             
-            <h1 className="font-extrabold text-[100px] leading-[125px] whitespace-nowrap overflow-hidden text-white">king chess</h1>
+            <h1 className="font-extrabold text-[100px] leading-[125px] whitespace-nowrap overflow-hidden text-white">different way to play.</h1>
             <div className="flex items-center space-x-4">
 
               <div onClick={signIn} className="rounded-full hover:brightness-110 trans cursor-pointer p-[10px] px-[14px] border-[5px] hover: border-x-blue-500 border-y-transparent text-white bg-blue-400 flex items-center space-x-2">
@@ -104,13 +104,13 @@ export default function Home() {
               </div>
               <p className="font-semibold text-slate-200 text-xl">to play some chess</p>
             </div>
-            <p className="font-semibold text-gray-400 pt-8">king chess (formerly kgv chess) is an <span onClick={() => router.push("https://github.com/vivzn/king-chess")} className="underline  cursor-pointer text-blue-300">open-source</span> chess website to play and learn chess.</p>
-            <div className="flex p-2 px-3 border-gray-600 border-2 items-center space-x-2 rounded-full mt-8">
+            <p className="font-semibold text-slate-400 pt-8 text-center">king chess (formerly kgv chess) is an <span onClick={() => router.push("https://github.com/vivzn/king-chess")} className="underline  cursor-pointer text-blue-300">open-source</span> chess website written in <span className="italic">Next.js</span> to play chess multiplayer via a link, solve puzzles, fight bots, and strategize with an engine all for free with many <span onClick={() => alert("coming soon..")} className="text-blue-300 underline cursor-pointer">unblocked domains</span> to hide against a school/work firewall</p>
+            <div className="flex p-2 px-3 border-slate-600 border-2 items-center space-x-2 rounded-full mt-8">
               <div className="w-[10px] h-[10px] bg-green-400 animate-pulse rounded-full">
 
               </div>
               <div className="flex items-center space-x-4 w-full">
-                <span className="font-bold text-[14px] text-white">canary @ 1.0</span>
+                <span className="font-bold text-[14px] text-white">canary @ {process?.env.NEXT_PUBLIC_VERSION || 1.0}</span>
                
               </div>
             </div>
@@ -118,16 +118,20 @@ export default function Home() {
             
             
             <div className="flex p-4 bg-black/10 w-[700px] flex-col space-y-4 items-center space-x-2 rounded-2xl font-semibold text-white">
-              <div className="flex items-center space-x-2">
-                <PencilSquareIcon className="w-6 h-6 text-white stroke-[2]" />
-                <span>Change Logs</span>
+              <div className="flex items-center space-x-4">
+                <PencilSquareIcon className="w-8 h-8 text-blue-300 stroke-[2]" />
+                <span className="text-2xl">Change Logs</span>
               </div>
-              <ol className="list-disc">
+              <ol className="list-disc flex flex-col space-y-4">
 
 
-
+              <li className="flex items-center space-x-2">
+                  <span className="text-blue-300">4/27/24</span>
+                  <MinusIcon className="w-5 h-5 text-white stroke-[2]" />
+                  <span>improved move latency by changing to Singapore servers, added resignation, and changed basic ui/colors</span>
+                </li>
                 <li className="flex items-center space-x-2">
-                  <span className="text-blue-300">canary @ 1.0</span>
+                  <span className="text-blue-300">4/25/24</span>
                   <MinusIcon className="w-5 h-5 text-white stroke-[2]" />
                   <span>basic features: only playing and sending game links to friends</span>
                 </li>

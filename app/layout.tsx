@@ -75,7 +75,7 @@ export default function RootLayout({
         <body>
 
           {load && <Loading />}
-          <div className="w-screen h-screen overflow-hidden flex flex-grow-[1] bg-gray-700">
+          <div className="w-screen h-screen overflow-hidden flex flex-grow-[1] bg-slate-700">
 
 
             {user && <Nav />}

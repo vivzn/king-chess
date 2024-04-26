@@ -41,21 +41,17 @@
     width: 10px;
   }
 
-  .simpleScroll::-webkit-scrollbar-track {
-    background-color: #ffffff0e;
-  }
-
   .simpleScroll::-webkit-scrollbar-thumb {
     border-radius: 16px;
-    background-color: #606976;
+    background-color: #475569;
   }
 
 
 
-
+ 
 
 .loader {
-  border: 5px solid #ffffff33;
+  border: 5px solid #fdfdfd76;
   border-bottom-color: #88c3e3;
   border-radius: 50%;
   display: inline-block;

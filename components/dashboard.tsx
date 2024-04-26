@@ -46,10 +46,10 @@ export function Dashboard() {
       <div className='flex flex-col space-y-6 items-start w-fit'>
 
         <div className='flex justify-center items-center space-x-6 w-full'>
-          <Tippy content={
+          {/* <Tippy content={
             <MyCustomTip text={"work in progress"} />
           }>
-            <div className='w-full flex items-center justify-center rounded-full p-6 py-4 font-bold text-amber-600 bg-amber-200'>
+            <div className='w-full flex items-center justify-center rounded-xl p-6 py-4 font-bold text-amber-600 bg-amber-300'>
               <div className="flex items-center space-x-6">
 
                 <BookmarkIcon className="w-8 h-8 text-amber-600 stroke-[2]" />
@@ -64,26 +64,26 @@ export function Dashboard() {
             <MyCustomTip text={"work in progress"} />
           }>
 
-            <div className='w-full flex items-center justify-center rounded-full p-6 py-4 font-bold text-amber-600 bg-amber-200'>
+            <div className='w-full flex items-center justify-center rounded-xl p-6 py-4 font-bold text-blue-400 bg-blue-400/10'>
               <div className="flex items-center space-x-6">
 
-                <AcademicCapIcon className="w-8 h-8 text-amber-600 stroke-[2]" />
+                <AcademicCapIcon className="w-8 h-8 text-blue-600 stroke-[2]" />
 
                 <p className="text-[28px]">Strats</p>
               </div>
 
             </div>
 
-          </Tippy>
+          </Tippy> */}
         </div>
 
         <div className='flex justify-center items-center space-x-6 w-full'>
           <div onClick={() => {
             createGame()
-          }} className='w-full hover:brightness-[1.1] transition cursor-pointer hover:border-x-transparent hover:scale-[1.03] duration-400 ease-[cubic-bezier(.3,.48,.47,1.48)] flex items-center border-[8px] border-x-blue-600 border-y-transparent justify-center rounded-full p-6 font-bold text-blue-700 bg-blue-400'>
+          }} className='w-full hover:brightness-[1.1] transition cursor-pointer hover:border-x-transparent hover:scale-[1.03] duration-400 ease-[cubic-bezier(.3,.48,.47,1.48)] flex items-center justify-center rounded-xl p-6 font-bold text-blue-600 bg-blue-300'>
             <div className="flex items-center space-x-6">
 
-              <SquaresPlusIcon className="w-10 h-10 text-blue-700 stroke-[2]" />
+              <SquaresPlusIcon className="w-10 h-10 text-blue-600 stroke-[2]" />
 
               <p className="text-[28px]">Create Game</p>
             </div>
@@ -94,7 +94,7 @@ export function Dashboard() {
           <Tippy content={
             <MyCustomTip text={"work in progress"} />
           }>
-            <div className='bg-blue-400/10 rounded-full p-6 py-4 font-semibold text-blue-400'>
+            <div className='bg-blue-400/10 rounded-xl p-6 py-4 font-semibold text-blue-400'>
               <div className="flex items-center space-x-6">
 
                 <PuzzlePieceIcon className="w-8 h-8 text-blue-500 stroke-[2]" />
@@ -106,7 +106,7 @@ export function Dashboard() {
           <Tippy content={
             <MyCustomTip text={"work in progress"} />
           }>
-            <div className='bg-blue-400/10 rounded-full p-6 py-4 font-semibold text-blue-400'>
+            <div className='bg-blue-400/10 rounded-xl p-6 py-4 font-semibold text-blue-400'>
               <div className="flex items-center space-x-6">
 
                 <GlobeEuropeAfricaIcon className="w-8 h-8 text-blue-500 stroke-[2]" />
@@ -118,7 +118,7 @@ export function Dashboard() {
           <Tippy content={
             <MyCustomTip text={"work in progress"} />
           }>
-            <div className='bg-blue-400/10 rounded-full p-6 py-4 font-semibold text-blue-400'>
+            <div className='bg-blue-400/10 rounded-xl p-6 py-4 font-semibold text-blue-400'>
               <div className="flex items-center space-x-6">
 
                 <CpuChipIcon className="w-8 h-8 text-blue-500 stroke-[2]" />

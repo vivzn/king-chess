@@ -10,8 +10,8 @@ import { Chess } from "chess.js";
 import { nanoid } from "nanoid";
 import Loading from "@/components/loading";
 import Error from "@/components/error";
-import { ArrowDownIcon, ArrowsPointingOutIcon, ArrowsUpDownIcon, FlagIcon, PaperClipIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { BoltIcon, BoltSlashIcon, FlagIcon as FlagIconSolid, SpeakerWaveIcon, WrenchScrewdriverIcon } from "@heroicons/react/24/solid";
+import { ArrowDownIcon, ArrowsPointingOutIcon, ArrowsUpDownIcon, ChatBubbleOvalLeftIcon, FlagIcon, PaperClipIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3BottomLeftIcon, BoltIcon, BoltSlashIcon, FlagIcon as FlagIconSolid, SpeakerWaveIcon, WrenchScrewdriverIcon } from "@heroicons/react/24/solid";
 import Tippy from "@tippyjs/react";
 import MyCustomTip from "@/components/mycustomtip";
 import useSWR from "swr";
@@ -183,6 +183,14 @@ export default function Game() {
     "bK",
   ];
 
+  const [stopShowing, setStopShowing] = useState(false);
+
+  useEffect(() => {
+    if (!gameModule && data?.data?.winner) {
+      setGameModule(data?.data?.winner)
+    }
+  }, [data?.data?.winner])
+
   const pieceComponents: any = {};
   pieces.forEach((piece) => {
     pieceComponents[piece] = ({ squareWidth }: any) => {
@@ -314,27 +322,64 @@ export default function Game() {
           method: "checkmate",
           winnner: game.main.turn() === "w" ? "b" : "w",
         });
+
+        if (data?.data?.gameStatus == "finished") return;
+
+        axios.post('/api/update-game', {
+          _id: pathname, update: {
+            winner: {
+              winner: game.main.turn() === "w" ? "b" : "w",
+              method: "checkmate",
+            },
+            gameStatus: "finished",
+          }
+        }).then((data: any) => {
+          // console.log("YOU are added as W")
+        })
       }
 
-      if (game.main?.isDraw()) {
-        setGameModule({
-          method: "draw",
-          winner: "-",
-        });
-      }
+
 
       if (game.main?.isInsufficientMaterial()) {
         setGameModule({
-          method: "checkmate",
+          method: "insufficientMaterial",
           winnner: "-",
         });
+
+        if (data?.data?.gameStatus == "finished") return;
+
+        axios.post('/api/update-game', {
+          _id: pathname, update: {
+            winner: {
+              winner: "-",
+              method: "insufficientMaterial",
+            },
+            gameStatus: "finished",
+          }
+        }).then((data: any) => {
+          // console.log("YOU are added as W")
+        })
       }
 
       if (game?.main?.isStalemate()) {
         setGameModule({
-          method: "checkmate",
+          method: "stalemate",
           winnner: "-",
         });
+
+        if (data?.data?.gameStatus == "finished") return;
+
+        axios.post('/api/update-game', {
+          _id: pathname, update: {
+            winner: {
+              winner: "-",
+              method: "stalemate",
+            },
+            gameStatus: "finished",
+          }
+        }).then((data: any) => {
+          // console.log("YOU are added as W")
+        })
       }
     }
   }, [game?.main])
@@ -394,16 +439,16 @@ export default function Game() {
       </div>}
       <div className="w-[61%] h-full flex flex-col overflow-auto simpleScroll">
 
-        <div className="w-full h-full bg-gray-900 p-6 grid place-content-center space-x-3">
-          {gameModule && (
+        <div className="w-full h-full bg-slate-900 p-6 grid place-content-center space-x-3">
+          {(gameModule?.winner && !stopShowing) && (
             <div className="w-screen h-screen bg-black/20 absolute inset-0 z-50 grid place-content-center">
               <div className="p-8 flex flex-col space-y-4 rounded-2xl bg-slate-600">
                 <p className="text-white font-bold text-3xl flex items-center space-x-2">
                   <BoltIcon className="w-7 h-7" />
-                  <span>{gameModule.method}</span>
+                  <span>  {gameModule.method}</span>
                 </p>
-                {gameModule.winner == "-" ? (<p className="font-semibold text-slate-300 text-2xl">damn no one won</p>) : <p className="font-semibold text-slate-300 text-2xl">{gameModule.winnner == "w" ? "white" : "black"} is the winner</p>}
-                <XMarkIcon onClick={() => setGameModule(null)} className="h-8 cursor-pointer text-white stroke-[2.5] flex items-center justify-center p-2 rounded-full bg-black/20 w-full" />
+                {gameModule.winner == "-" ? (<p className="font-semibold text-slate-300 text-2xl">damn no one won</p>) : <p className="font-semibold text-slate-300 text-2xl">{gameModule?.winner == "w" && "white won"}{gameModule?.winner == "b" && "black won"}{gameModule?.winner == "-" && "no winner"}</p>}
+                <XMarkIcon onClick={() => setStopShowing(true)} className="h-8 cursor-pointer text-white stroke-[2.5] flex items-center justify-center p-2 rounded-full bg-black/20 w-full" />
               </div>
             </div>
           )}
@@ -416,7 +461,7 @@ export default function Game() {
                 <div className={`w-full h-fit px-[8x] space-x-3 p-[8px] leading-3 flex flex-grow-[1] items-center rounded-full`}>
                   <div className="text-[13px] text-slate-400">{(index + 2) / 2}.</div>
                   <div className="h-full w-full space-x-2 pr-2 flex font-semibold">
-                    {txt && <div key={txt?.san} className="w-[50%] min-w-[50%] max-w-[50%] bg-white/3 h-[20px] flex items-center px-[8px] space-x-1 text-slate-300 border-l-px] border-gray-400/20">
+                    {txt && <div key={txt?.san} className="w-[50%] min-w-[50%] max-w-[50%] bg-white/3 h-[20px] flex items-center px-[8px] space-x-1 text-slate-300 border-l-px] border-slate-400/20">
                       {determinePiece(txt?.piece, txt?.color)}
                       <span className="" style={{ fontSize: txt?.san?.length > 4 ? ("10px") : ("14px") }}>{txt?.san}</span>
                     </div>}
@@ -424,7 +469,7 @@ export default function Game() {
 
 
 
-                    {(moveList[index + 1] && <div key={moveList[index + 1]?.san} className="w-[50%] min-w-[50%] max-w-[50%] bg-white/3 h-[20px] flex items-center px-[8px] space-x-1 text-slate-300 border-l-px] border-gray-400/20">
+                    {(moveList[index + 1] && <div key={moveList[index + 1]?.san} className="w-[50%] min-w-[50%] max-w-[50%] bg-white/3 h-[20px] flex items-center px-[8px] space-x-1 text-slate-300 border-l-px] border-slate-400/20">
                       {determinePiece(moveList[index + 1]?.piece, moveList[index + 1]?.color)}
                       <span className="" style={{ fontSize: "14" + "px" }}>{(moveList[index + 1]?.san)}</span>
                     </div>)}
@@ -441,7 +486,7 @@ export default function Game() {
               <div className={`w-full h-fit px-[8x] space-x-3 p-[8px] leading-3 flex flex-grow-[1] items-center rounded-full`}>
                 <div className="text-[13px] text-slate-400">1.</div>
                 <div className="h-full w-full space-x-2 pr-2 flex font-semibold">
-                  <div className="w-[100%] min-w-[100%] max-w-[100%] bg-white/3 h-[20px] flex items-center text-slate-300 border-l-px] border-gray-400/20">
+                  <div className="w-[100%] min-w-[100%] max-w-[100%] bg-white/3 h-[20px] flex items-center text-slate-300 border-l-px] border-slate-400/20">
 
                     <span>not played</span>
 
@@ -461,7 +506,7 @@ export default function Game() {
 
 
 
-            <div className="flex p-4 border-b-2 border-white/5 space-x-2 justify-between">
+            <div className="flex p-4 border-b-2 border-r-2 border-white/5 space-x-2 justify-between">
               <div className="flex space-x-6 items-center">
                 <SpeakerWaveIcon className="w-6 h-6 text-white" />
                 <WrenchScrewdriverIcon className="w-6 h-6 text-white" />
@@ -472,61 +517,104 @@ export default function Game() {
 
 
 
-            <div className="w-full h-full flex items-center justify-center space-x-4 p-4">
-              {data?.data?.gameStatus == "playing" ? <>
-                <Tippy content={<MyCustomTip text={"resign"} />}>
-                  <div className="bg-red-500 space-x-4 p-4 items-center justify-center flex trans rounded-full trans cursor-pointer">
-                    <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" />
-                    <FlagIcon className="w-6 h-6 text-red-100 rotate-[15deg] stroke-[2.5]" />
-                    <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" />
+            <div className="w-full h-full flex items-center border-r-2 border-white/5 justify-center space-x-4 p-4">
+              {data?.data?.gameStatus == "playing" || data?.data?.gameStatus == "finished" ? <>
+                {data?.data?.gameStatus == "playing" && <Tippy content={<MyCustomTip text={"resign"} />}>
+                  <div onClick={async () => {
+                    let yesOrNo = window.confirm("Are you sure you want to resign?")
+
+                    if (yesOrNo) {
+                      setGameModule({
+                        winner: (playerState == playerEnum.PlayerB) ? "w" : "b",
+                        method: "resign",
+                      })
+                      axios.post('/api/update-game', {
+                        _id: pathname, update: {
+                          winner: {
+                            winner: (playerState == playerEnum.PlayerB) ? "w" : "b",
+                            method: "resign",
+                          },
+                          gameStatus: "finished",
+                        }
+                      }).then((data: any) => {
+                        // console.log("YOU are added as W")
+                      })
+                    }
+                  }} className="bg-red-500 text-white font-semibold text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-xl trans cursor-pointer">
+                    {/* <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" /> */}
+                    <FlagIconSolid className="w-6 h-6 text-white rotate-[15deg] stroke-[2.5]" />
+                    <span>resign</span>
+                    {/* <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" /> */}
 
                   </div>
-                </Tippy>
-                <Tippy content={<MyCustomTip text={"draw"} />}>
-                  <div className="bg-amber-300 space-x-4 p-4 items-center justify-center flex trans rounded-full trans cursor-pointer">
-                    {/* <ArrowsUpDownIcon className="w-4 h-4 text-slate-300 rotate-[15deg] stroke-[2.5]" /> */}
-                    <ArrowsUpDownIcon className="w-6 h-6 text-amber-600 stroke-[2.5]" />
-                    {/* <ArrowsUpDownIcon className="w-4 h-4 text-slate-300 rotate-[15deg] stroke-[2.5]" /> */}
+                </Tippy>}
+                {data?.data?.gameStatus == "playing" && <Tippy content={<MyCustomTip text={"WIP coming soon"} />}>
+                  <div className="bg-amber-500 text-white font-semibold text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-xl trans cursor-pointer">
+                    {/* <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" /> */}
+                    <ArrowsUpDownIcon className="w-6 h-6 text-white stroke-[2.5]" />
+                    <span>draw?</span>
+                    {/* <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" /> */}
 
                   </div>
-                </Tippy>
+                </Tippy>}
+
+                {data?.data?.gameStatus == "finished" && (
+                  <div className="bg-slate-600 text-white font-semibold text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-xl trans">
+                    {/* <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" /> */}
+                    <XCircleIcon className="w-6 h-6 text-white stroke-[2.5]" />
+                    <span>this game has ended</span>
+                    {/* <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" /> */}
+
+                  </div>
+                )}
+
               </> : (
                 <>
                   <WaitForRival />
                 </>
               )}
             </div>
-            <div className="w-full p-4 pt-0">
-              <div className="w-full h-full max-h-full flex flex-col flex-grow-[1] p-4 space-y-4 border-2 border-white/5 rounded-t-xl"> <div className="w-full h-[150px] overflow-y-scroll simpleScroll space-y-2"> {msgList && msgList.map((msg: any, index: any) => (<div key={index} className="space-x-[8px] w-full h-fit"> <span className="font-semibold text-white">{msg?.user}:</span> <span className="font-semibold text-slate-400">{msg?.text}</span> </div>))} </div> <div className="w-full h-fit flex-grow-[1] rounded-full flex space-x-4 p-3 placeholder:font-semibold font-semibold bg-slate-500"> <ChatBubbleLeftEllipsisIcon className="w-6 h-6 stroke-[2] text-white" /> <form onSubmit={submitMsg}> <input onChange={(e) => setMsg(e?.target.value)} value={msg} className="bg-transparent focus:outline-none outline-none text-white w-full" placeholder="game chat" /> </form> </div> </div>
+            <div className="w-full p-4 pt-0 border-r-2 border-white/5">
+              <div className="w-full h-full max-h-full flex flex-col flex-grow-[1] p-4 space-y-4 border-2 border-white/5 rounded-xl">  <div className="w-full h-fit flex-grow-[1] rounded-xl flex space-x-4 p-3 placeholder:font-semibold font-semibold bg-slate-600"> <ChatBubbleOvalLeftIcon className="w-6 h-6 stroke-[2.5] text-slate-300" /> <form className="w-full" onSubmit={submitMsg}> <input onChange={(e) => setMsg(e?.target.value)} value={msg} className="bg-transparent focus:outline-none outline-none text-white w-full h-full" placeholder="game chat" /> </form> </div> <div className="w-full h-[150px] overflow-y-scroll simpleScroll space-y-2"> {msgList && msgList.map((msg: any, index: any) => (<div key={index} className="space-x-[8px] w-full h-fit"> <span className="font-semibold text-white">{msg?.user}:</span> <span className="font-semibold text-slate-400">{msg?.text}</span> </div>))} </div> </div>
             </div>
           </div>
 
         </div>
       </div>
-      <div className="w-[39%] h-full bg-[#4a5668]">
-        <div className="w-full h-[39%] border-b-2  border-[#3d4756] flex flex-col flex-grow-[1]">
-          <div className="p-2 flex w-full h-[45px] justify-center bg-white/5">
+      <div className="w-[39%] h-full bg-slate-700">
+        <div className="w-full h-[39%] border-b-2  border-white/5 flex flex-col flex-grow-[1]">
+          <div className="p-4 flex w-full justify-center bg-slate-700 border-white/5 border-b-2">
             {(playerState == playerEnum.PlayerB || playerState == playerEnum.PlayerW) && <div className="text-white font-bold flex space-x-4 items-center">
-              <div className={`w-4 h-4 rounded-full animate-pulse ${playerState == playerEnum.PlayerW ? "bg-white" : "bg-black"}`}>
+              <div className={`w-5 h-5 rounded-[4px] ${playerState == playerEnum.PlayerW ? "bg-white" : "bg-black"}`}>
               </div>
-              <span>{playerState == playerEnum.PlayerW ? "you play as White" : "you play as Black"}</span>
+              <span className="text-white">you {playerState == playerEnum.PlayerW ? "play white" : "play black"}</span>
 
             </div>}
           </div>
-          <div className="w-full h-fit flex flex-col">
-            {data?.data?.gameStatus !== "playing" ? <div className="w-full h-fit grid place-content-center p-4 border-b-2 border-black/20">
+          <div className="w-full h-full flex flex-col">
+            {data?.data?.gameStatus == "waiting" ? <div className="w-full h-full grid place-content-center p-4">
               <WaitForRival />
             </div> : (
-              <div className="flex flex-col w-full h-fit">
-                <div className="flex w-full h-fit items-center justify-center space-x-3 bg-slate-700 p-4">
-                  <span className="font-bold text-slate-200">playing</span>
-                  <Image alt="opponent" width={40} className="rounded-full border-[3px] border-slate-500" height={40} src={opponent?.photoURL} />
-                  <div className="flex flex-col">
+              <div className="flex flex-col w-full h-full">
+                <div className="flex w-full h-full items-center justify-center space-x-4 p-4 border-white/5  bg-slate-800">
+                  {/* <span className="font-bold text-slate-200">playing</span> */}
 
-                    <span className="text-white font-bold leading-4 flex space-x-3"><span className="text-blue-500">{opponent?.elo}</span><span>{opponent?.name}</span></span>
-                    <span className="text-slate-400 font-semibold">{opponent?.email}</span>
 
-                  </div>
+
+                  <fieldset className="flex translate-y-[-7px] items-center gap-4 p-4 rounded-xl bg-slate-700">
+                    <legend className="font-bold text-white">playing</legend>
+                    <div className="absolute translate-x-[-30px] translate-y-[-48px] text-bold items-center text-amber-500 space-x-2 flex">
+                      <BoltIcon className="w-7 h-7 text-amber-500" />
+
+                    </div>
+                    <Image alt="opponent" width={50} className="rounded-xl border-slate-white/5" height={50} src={opponent?.photoURL} />
+                    <div className="flex flex-col space-y-1">
+
+                      <span className="text-slate-300 font-bold leading-4 flex space-x-4"><span className="text-blue-300">{opponent?.elo}</span><span>{opponent?.name?.toLowerCase()}</span></span>
+                      <span className="text-slate-500 font-semibold">{opponent?.email}</span>
+
+                    </div>
+                  </fieldset>
                 </div>
 
               </div>
@@ -534,16 +622,11 @@ export default function Game() {
 
           </div>
 
-          <div className="w-full h-full p-4 flex flex-col grow-[1]">
-            <div className="w-full h-full grid place-content-center">
 
-              <div className="w-full h-fit rounded-full flex space-x-4 p-3 placeholder:font-semibold font-semibold bg-slate-500"> <ChatBubbleLeftEllipsisIcon className="w-6 h-6 stroke-[2] text-white" /> <form onSubmit={submitMsg}> <input onChange={(e) => setMsg(e?.target.value)} value={msg} className="bg-transparent focus:outline-none outline-none text-white w-full" placeholder="game chat" /> </form> </div>
-            </div>
-
-          </div>
         </div>
         <div className="w-full h-[61%] flex">
-          <div className="w-[61%] h-full border-[#3d4756] border-r-2 p-4">
+
+          <div className="w-[100%] h-full border-white/5 border-r-2 p-4">
             <div className="w-full h-full simpleScroll space-y-2 overflow-y-scroll simpleScroll">
               {(moveList?.map((txt: any, index: any) => {
 
@@ -551,17 +634,17 @@ export default function Game() {
                   <div className={`w-full h-fit px-[8x] space-x-3 p-[8px] leading-3 flex flex-grow-[1] items-center rounded-full`}>
                     <div className="text-[13px] text-slate-400">{(index + 2) / 2}.</div>
                     <div className="h-full w-full space-x-2 pr-2 flex font-semibold">
-                      {txt && <div key={txt?.san} className="w-[50%] min-w-[50%] max-w-[50%] bg-white/3 h-[20px] flex items-center px-[8px] space-x-1 text-slate-300 border-l-px] border-gray-400/20">
+                      {txt && <div key={txt?.san} className="w-[50%] min-w-[50%] max-w-[50%] bg-white/3 h-[20px] flex items-center px-[8px] space-x-1 text-slate-300 border-l-px] border-slate-400/20">
                         {determinePiece(txt?.piece, txt?.color)}
-                        <span className="" style={{ fontSize: txt?.san?.length > 4 ? ("10px") : ("14px") }}>{txt?.san}</span>
+                        <span className="text-[16px]">{txt?.san?.toLowerCase()}</span>
                       </div>}
 
 
 
 
-                      {((moveList && moveList[index + 1]) && <div key={moveList[index + 1]?.san} className="w-[50%] min-w-[50%] max-w-[50%] bg-white/3 h-[20px] flex items-center px-[8px] space-x-1 text-slate-300 border-l-px] border-gray-400/20">
+                      {((moveList && moveList[index + 1]) && <div key={moveList[index + 1]?.san} className="w-[50%] min-w-[50%] max-w-[50%] bg-white/3 h-[20px] flex items-center px-[8px] space-x-1 text-slate-300 border-l-px] border-slate-white/5">
                         {determinePiece(moveList[index + 1]?.piece, moveList[index + 1]?.color)}
-                        <span className="" style={{ fontSize: "14" + "px" }}>{(moveList[index + 1]?.san)}</span>
+                        <span className="" style={{ fontSize: "16" + "px" }}>{(moveList[index + 1]?.san?.toLowerCase())}</span>
                       </div>)}
 
 
@@ -576,7 +659,7 @@ export default function Game() {
                 <div className={`w-full h-fit px-[8x] space-x-3 p-[8px] leading-3 flex flex-grow-[1] items-center rounded-full`}>
                   <div className="text-[13px] text-slate-400">1.</div>
                   <div className="h-full w-full space-x-2 pr-2 flex font-semibold">
-                    <div className="w-[100%] min-w-[100%] max-w-[100%] bg-white/3 h-[20px] flex items-center text-slate-300 border-l-px] border-gray-400/20">
+                    <div className="w-[100%] min-w-[100%] max-w-[100%] h-[20px] flex items-center text-slate-300">
 
                       <span>not played</span>
 
@@ -590,7 +673,7 @@ export default function Game() {
 
             </div>
           </div>
-          <div className="w-[39%] h-full"></div>
+
         </div>
 
       </div>
