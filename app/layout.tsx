@@ -31,7 +31,7 @@ export default function RootLayout({
       if (user_) {
 
         setLoad(true);
-        console.log("USER", user_?.email);
+        // console.log("USER", user_?.email);
         axios.post('/api/get-user', { email: user_?.email }).then((data: any) => {
 
           if (data?.data) {
@@ -42,7 +42,7 @@ export default function RootLayout({
             // console.log("AUhj")
             setLoad(false)
           } else {
-            console.log(data)
+            // console.log(data)
             router.refresh();
             setLoad(false);
           }
@@ -54,7 +54,7 @@ export default function RootLayout({
         })
       } else {
         setUser(null);
-        console.log("no user got yet")
+        // console.log("no user got yet")
         router.push("/");
       }
     })

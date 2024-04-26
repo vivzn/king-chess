@@ -67,7 +67,7 @@ export default function Game() {
         if (opponentUser) {
           axios.post('/api/get-user', { email: opponentUser }).then((data: any) => {
             if (data?.data) {
-              console.log("OPPONENT", data?.data)
+              // console.log("OPPONENT", data?.data)
               setOpponent(data?.data)
             } else {
 
@@ -91,13 +91,13 @@ export default function Game() {
           // if(!user) return;/
           const gData = data?.data;
           const members = gData.members;
-          console.log(members.length)
+          // console.log(members.length)
           // console.log(members)
 
           let over = false;
 
           members.forEach((member: any) => {
-            console.log(member.user, user?.email)
+            // console.log(member.user, user?.email)
             if (member.user === user?.email) {
               // console.log(member?.side == "w" ? playerEnum.PlayerW : playerEnum.PlayerB)
               setPlayerState(member?.side == "w" ? playerEnum.PlayerW : playerEnum.PlayerB);
@@ -130,7 +130,7 @@ export default function Game() {
 
             if (otherMember.side === "w") {
               setPlayerState(playerEnum.PlayerB)
-              console.log(user)
+              // console.log(user)
               axios.post('/api/update-game', {
                 _id: pathname, update: {
                   members: [...members, {
@@ -140,11 +140,11 @@ export default function Game() {
                   gameStatus: "playing",
                 }
               }).then((data: any) => {
-                console.log("YOU are added as W")
+                // console.log("YOU are added as W")
               })
             } else {
               setPlayerState(playerEnum.PlayerW)
-              console.log(user)
+              // console.log(user)
               axios.post('/api/update-game', {
                 _id: pathname, update: {
                   members: [...members, {
@@ -154,7 +154,7 @@ export default function Game() {
                   gameStatus: "playing",
                 }
               }).then((data: any) => {
-                console.log("YOU are added as B")
+                // console.log("YOU are added as B")
               })
             }
           }
@@ -203,12 +203,13 @@ export default function Game() {
   useEffect(() => {
     pusherClient.subscribe(pathname as string)
 
-    pusherClient.bind('move', (data: any) => {
+    const moveHandler = (data: any) => {
+
       if (data?.sessionID === pusherClient?.sessionID) {
         //it is the same user dont do anything
       } else {
         if (data?.data) {
-          console.log('SAN GIVEN', data?.data?.san)
+          // console.log('SAN GIVEN', data?.data?.san)
           const move_ = {
             from: data?.data?.from,
             to: data?.data?.to,
@@ -226,18 +227,27 @@ export default function Game() {
       }
 
 
-    })
 
-    pusherClient.bind('msg', (data: any) => {
+    }
+
+    pusherClient.bind('move', moveHandler)
+
+    const msgHandler = (data: any) => {
+
 
       if (!data) return;
       setMsgList((ml: any) => [...ml, data])
 
 
-    })
+
+    }
+
+    pusherClient.bind('msg', msgHandler)
 
     return () => {
       pusherClient.unsubscribe(pathname as string)
+      pusherClient.unbind('msg', msgHandler);
+      pusherClient.unbind('move', moveHandler);
     }
   }, []);
 
@@ -256,7 +266,7 @@ export default function Game() {
     }
 
     const move = gameCopyable.move(move_);
-    console.log(move)
+    // console.log(move)
     setGame({ main: gameCopyable })
 
 
@@ -287,7 +297,7 @@ export default function Game() {
         fen: gameCopyable.fen(),
       }
     }).then((data: any) => {
-      console.log("added move LIST")
+      // console.log("added move LIST")
     })
 
     return true;
@@ -300,7 +310,7 @@ export default function Game() {
       if (game.main?.isCheckmate()) {
         setGameModule({
           method: "checkmate",
-          winnner: game.main.turn() === "w"? "b" : "w",
+          winnner: game.main.turn() === "w" ? "b" : "w",
         });
       }
 
@@ -387,11 +397,11 @@ export default function Game() {
             <div className="w-screen h-screen bg-black/20 absolute inset-0 z-50 grid place-content-center">
               <div className="p-8 flex flex-col space-y-4 rounded-2xl bg-slate-600">
                 <p className="text-white font-bold text-3xl flex items-center space-x-2">
-                  <BoltIcon className="w-7 h-7"/>
+                  <BoltIcon className="w-7 h-7" />
                   <span>{gameModule.method}</span>
                 </p>
                 {gameModule.winner == "-" ? (<p className="font-semibold text-slate-300 text-2xl">damn no one won</p>) : <p className="font-semibold text-slate-300 text-2xl">{gameModule.winnner == "w" ? "white" : "black"} is the winner</p>}
-                <XMarkIcon onClick={() => setGameModule(null)} className="h-8 cursor-pointer text-white stroke-[2.5] flex items-center justify-center p-2 rounded-full bg-black/20 w-full"/>
+                <XMarkIcon onClick={() => setGameModule(null)} className="h-8 cursor-pointer text-white stroke-[2.5] flex items-center justify-center p-2 rounded-full bg-black/20 w-full" />
               </div>
             </div>
           )}
