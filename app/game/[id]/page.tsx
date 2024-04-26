@@ -198,6 +198,8 @@ export default function Game() {
     }
   });
 
+  //
+
   const [showScroll, setShowScroll] = useState(true);
 
   useEffect(() => {
