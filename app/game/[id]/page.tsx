@@ -430,7 +430,7 @@ export default function Game() {
   return (
     <div className="w-full h-screen flex flex-grow-[1]">
       {showScroll && <div id="scroller" className="w-8 h-8 rounded-full bottom-0 bg-white z-[10] grid place-content-center absolute ml-4 mb-2 shadow-2xl animate-bounce">
-        <ArrowDownIcon className="w-5 h-5 stroke-[3] text-blue-400" />
+        <ArrowDownIcon className="w-5 h-5 stroke-[3] text-violet-400" />
 
         <p className="absolute font-bold text-white w-[200px] space-x-1 ml-[38px] mt-[px] bg-slate-600 rounded-full p-1 justify-center flex">
           <span>Scroll down to chat</span>
@@ -540,7 +540,7 @@ export default function Game() {
                         // console.log("YOU are added as W")
                       })
                     }
-                  }} className="bg-red-500 text-white font-semibold text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-xl trans cursor-pointer">
+                  }} className="bg-red-500 text-white font-semibold text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-full trans cursor-pointer">
                     {/* <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" /> */}
                     <FlagIconSolid className="w-6 h-6 text-white rotate-[15deg] stroke-[2.5]" />
                     <span>resign</span>
@@ -549,7 +549,7 @@ export default function Game() {
                   </div>
                 </Tippy>}
                 {data?.data?.gameStatus == "playing" && <Tippy content={<MyCustomTip text={"WIP coming soon"} />}>
-                  <div className="bg-amber-500 text-white font-semibold text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-xl trans cursor-pointer">
+                  <div className="bg-amber-500 text-white font-semibold text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-full trans cursor-pointer">
                     {/* <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" /> */}
                     <ArrowsUpDownIcon className="w-6 h-6 text-white stroke-[2.5]" />
                     <span>draw?</span>
@@ -559,7 +559,7 @@ export default function Game() {
                 </Tippy>}
 
                 {data?.data?.gameStatus == "finished" && (
-                  <div className="bg-slate-600 text-white font-semibold text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-xl trans">
+                  <div className="bg-slate-600 text-white font-semibold text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-full trans">
                     {/* <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" /> */}
                     <XCircleIcon className="w-6 h-6 text-white stroke-[2.5]" />
                     <span>this game has ended</span>
@@ -575,7 +575,7 @@ export default function Game() {
               )}
             </div>
             <div className="w-full p-4 pt-0 border-r-2 border-white/5">
-              <div className="w-full h-full max-h-full flex flex-col flex-grow-[1] p-4 space-y-4 border-2 border-white/5 rounded-xl">  <div className="w-full h-fit flex-grow-[1] rounded-xl flex space-x-4 p-3 placeholder:font-semibold font-semibold bg-slate-600"> <ChatBubbleOvalLeftIcon className="w-6 h-6 stroke-[2.5] text-slate-300" /> <form className="w-full" onSubmit={submitMsg}> <input onChange={(e) => setMsg(e?.target.value)} value={msg} className="bg-transparent focus:outline-none outline-none text-white w-full h-full" placeholder="game chat" /> </form> </div> <div className="w-full h-[150px] overflow-y-scroll simpleScroll space-y-2"> {msgList && msgList.map((msg: any, index: any) => (<div key={index} className="space-x-[8px] w-full h-fit"> <span className="font-semibold text-white">{msg?.user}:</span> <span className="font-semibold text-slate-400">{msg?.text}</span> </div>))} </div> </div>
+              <div className="w-full h-full max-h-full flex flex-col flex-grow-[1] p-4 space-y-4 border-2 border-white/5 rounded-full">  <div className="w-full h-fit flex-grow-[1] rounded-full flex space-x-4 p-3 placeholder:font-semibold font-semibold bg-slate-600"> <ChatBubbleOvalLeftIcon className="w-6 h-6 stroke-[2.5] text-slate-300" /> <form className="w-full" onSubmit={submitMsg}> <input onChange={(e) => setMsg(e?.target.value)} value={msg} className="bg-transparent focus:outline-none outline-none text-white w-full h-full" placeholder="game chat" /> </form> </div> <div className="w-full h-[150px] overflow-y-scroll simpleScroll space-y-2"> {msgList && msgList.map((msg: any, index: any) => (<div key={index} className="space-x-[8px] w-full h-fit"> <span className="font-semibold text-white">{msg?.user}:</span> <span className="font-semibold text-slate-400">{msg?.text}</span> </div>))} </div> </div>
             </div>
           </div>
 
@@ -601,16 +601,16 @@ export default function Game() {
 
 
 
-                  <fieldset className="flex translate-y-[-7px] items-center gap-4 p-4 rounded-xl bg-slate-700">
+                  <fieldset className="flex translate-y-[-7px] items-center gap-4 p-4 rounded-full bg-slate-700">
                     <legend className="font-bold text-white">playing</legend>
                     <div className="absolute translate-x-[-30px] translate-y-[-48px] text-bold items-center text-amber-500 space-x-2 flex">
                       <BoltIcon className="w-7 h-7 text-amber-500" />
 
                     </div>
-                    <Image alt="opponent" width={50} className="rounded-xl border-slate-white/5" height={50} src={opponent?.photoURL} />
+                    <Image alt="opponent" width={50} className="rounded-full border-slate-white/5" height={50} src={opponent?.photoURL} />
                     <div className="flex flex-col space-y-1">
 
-                      <span className="text-slate-300 font-bold leading-4 flex space-x-4"><span className="text-blue-300">{opponent?.elo}</span><span>{opponent?.name?.toLowerCase()}</span></span>
+                      <span className="text-slate-300 font-bold leading-4 flex space-x-4"><span className="text-violet-300">{opponent?.elo}</span><span>{opponent?.name?.toLowerCase()}</span></span>
                       <span className="text-slate-500 font-semibold">{opponent?.email}</span>
 
                     </div>

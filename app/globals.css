@@ -12,6 +12,15 @@
   }
 }
 
+.colorGradient {
+  background: -webkit-linear-gradient(right, #c084fc, #60a5fa );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+
+  
+}
+
 
 
 
@@ -51,13 +60,31 @@
  
 
 .loader {
-  border: 5px solid #fdfdfd76;
+  border: 6px solid #ffffff3c;
   border-bottom-color: #88c3e3;
   border-radius: 50%;
   display: inline-block;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
 }
+
+.movingGradient {
+  background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
 
 @keyframes rotation {
   0% {

@@ -8,8 +8,8 @@ import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Dashboard } from "@/components/dashboard";
-import { ArrowLeftCircleIcon, BookmarkIcon, CubeTransparentIcon, EllipsisHorizontalCircleIcon, InformationCircleIcon, LinkIcon, MinusIcon, PencilSquareIcon, WrenchScrewdriverIcon } from "@heroicons/react/24/outline";
-import { SparklesIcon } from "@heroicons/react/24/solid";
+import { BookmarkIcon, CubeTransparentIcon, EllipsisHorizontalCircleIcon, InformationCircleIcon, LinkIcon, MinusIcon, PencilSquareIcon, WrenchScrewdriverIcon } from "@heroicons/react/24/outline";
+import { SparklesIcon, ArrowLeftCircleIcon } from "@heroicons/react/24/solid";
 import { RootContext } from "@/context";
 
 export default function Home() {
@@ -66,7 +66,7 @@ export default function Home() {
       <div className="h-fit w-full p-8 px-[250px]">
         <div className="flex space-x-4 justify-between items-center cursor-pointer select-none">
           <div onClick={() => router.push("/")} className="flex space-x-6 items-center cursor-pointer select-none">
-            <SparklesIcon className="w-[34px] h-[34px] text-blue-200" />
+            <SparklesIcon className="w-[34px] h-[34px] text-violet-400" />
             <span className="tracking-wide text-[24px] w-[155px] text-slate-200 font-bold">king chess</span>
           </div>
 
@@ -80,8 +80,8 @@ export default function Home() {
             }} className="rounded-full hover:bg-slate-600 transition duration-200 ease-in-out p-[10px] border-2 border-slate-600">
               <LinkIcon className="w-5 h-5 text-slate-500 stroke-[2]" />
             </div>
-            <div onClick={signIn} className="rounded-full hover:brightness-110 trans p-[10px] px-[14px] border-[5px] hover: border-x-blue-500 border-y-transparent text-white bg-blue-400 flex items-center space-x-2">
-              <ArrowLeftCircleIcon className="w-5 h-5 stroke-[2] text-blue-500" />
+            <div onClick={signIn} className="rounded-full hover:brightness-110 trans cursor-pointer p-[10px] px-[14px] text-white bg-gradient-to-r from-violet-500 to-purple-400 flex items-center space-x-2">
+              <ArrowLeftCircleIcon className="w-5 h-5 stroke-[2] text-white-600/80" />
               <span className="font-semibold">sign in</span>
             </div>
           </div>
@@ -89,53 +89,52 @@ export default function Home() {
       </div>
       <div className="w-full h-full px-80">
 
-        <div className="w-full flex items-center justify-center space-x-10 pt-20">
-          {/* <video className="w-[245px] brightness-[1.15] h-[350px] object-cover rounded-xl" autoPlay muted loop>
+        <div className="w-full flex items-center justify-center space-x-10">
+          {/* <video className="w-[245px] brightness-[1.15] h-[350px] object-cover rounded-full" autoPlay muted loop>
             <source src="/loopvideo.mp4" type="video/mp4" />
           </video> */}
           <div className="flex flex-col space-y-8 items-center w-fit">
-            
-            <h1 className="font-extrabold text-[100px] leading-[125px] whitespace-nowrap overflow-hidden text-white">different way to play.</h1>
-            <div className="flex items-center space-x-4">
 
-              <div onClick={signIn} className="rounded-full hover:brightness-110 trans cursor-pointer p-[10px] px-[14px] border-[5px] hover: border-x-blue-500 border-y-transparent text-white bg-blue-400 flex items-center space-x-2">
-                <ArrowLeftCircleIcon className="w-5 h-5 stroke-[2] text-blue-500" />
+            <div className="border-2 p-1 px-4 rounded-full border-violet-400/30 bg-violet-400/10 ">
+              <span className="font-semibold colorGradient">beta version released</span>
+            </div>
+
+            <h1 className="font-bold text-[80px] leading-[80px] w-[1300px] text-center text-white">this is the new <br /> <span className="colorGradient">standard for chess</span></h1>
+
+            <p className="font-semibold text-slate-400 text-xl text-center">Play, Learn, Rank, and more.</p>
+            <div className="flex items-center space-x-4">
+              <div onClick={() => router.push("/https://github.com/vivzn/king-chess")} className="rounded-full hover:brightness-110 trans cursor-pointer p-[10px] px-[14px] text-slate-300 bg-slate-600 flex items-center space-x-2">
+                <LinkIcon className="w-5 h-5 stroke-[2.5] text-white-600/80" />
+                <span className="font-semibold">view open source</span>
+              </div>
+              <div onClick={signIn} className="rounded-full hover:brightness-110 trans cursor-pointer p-[10px] px-[14px] text-white bg-gradient-to-r from-violet-500 to-purple-400 flex items-center space-x-2">
+                <ArrowLeftCircleIcon className="w-5 h-5 stroke-[2] text-white-600/80" />
                 <span className="font-semibold">sign in</span>
               </div>
-              <p className="font-semibold text-slate-200 text-xl">to play some chess</p>
-            </div>
-            <p className="font-semibold text-slate-400 pt-8 text-center">king chess (formerly kgv chess) is an <span onClick={() => router.push("https://github.com/vivzn/king-chess")} className="underline  cursor-pointer text-blue-300">open-source</span> chess website written in <span className="italic">Next.js</span> to play chess multiplayer via a link, solve puzzles, fight bots, and strategize with an engine all for free with many <span onClick={() => alert("coming soon..")} className="text-blue-300 underline cursor-pointer">unblocked domains</span> to hide against a school/work firewall</p>
-            <div className="flex p-2 px-3 border-slate-600 border-2 items-center space-x-2 rounded-full mt-8">
-              <div className="w-[10px] h-[10px] bg-green-400 animate-pulse rounded-full">
 
-              </div>
-              <div className="flex items-center space-x-4 w-full">
-                <span className="font-bold text-[14px] text-white">canary @ {process?.env.NEXT_PUBLIC_VERSION || 1.0}</span>
-               
-              </div>
             </div>
-            
-            
-            
+
+
+
             <div className="flex p-4 bg-black/10 w-[700px] flex-col space-y-4 items-center space-x-2 rounded-2xl font-semibold text-white">
               <div className="flex items-center space-x-4">
-                <PencilSquareIcon className="w-8 h-8 text-blue-300 stroke-[2]" />
+                <PencilSquareIcon className="w-8 h-8 text-violet-300 stroke-[2]" />
                 <span className="text-2xl">Change Logs</span>
               </div>
               <ol className="list-disc flex flex-col space-y-4">
 
 
-              <li className="flex items-center space-x-2">
-                  <span className="text-blue-300">4/27/24</span>
+                <li className="flex items-center space-x-2">
+                  <span className="text-violet-300">4/27/24</span>
                   <MinusIcon className="w-5 h-5 text-white stroke-[2]" />
                   <span>improved move latency by changing to Singapore servers, added resignation, and changed basic ui/colors</span>
                 </li>
                 <li className="flex items-center space-x-2">
-                  <span className="text-blue-300">4/25/24</span>
+                  <span className="text-violet-300">4/25/24</span>
                   <MinusIcon className="w-5 h-5 text-white stroke-[2]" />
                   <span>basic features: only playing and sending game links to friends</span>
                 </li>
-                
+
               </ol>
             </div>
           </div>
