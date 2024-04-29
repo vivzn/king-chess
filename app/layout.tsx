@@ -74,7 +74,13 @@ export default function RootLayout({
         <Analytics />
         <SpeedInsights/>
         <head>
-          <title>king chess</title>
+          <title>king chess | the new standard of chess</title>
+          <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml"/>
+          <meta name="robots" content="noindex"/>
+          <meta name="google-site-verification" content="1R5UZJrtxamkK8ZPdUhvvOXCBsq1gjISmGTea768Tus" />
+          <meta name="description" content="play, learn, rank, and more - 1v1 your friends with a link, rank up, play bots, learn strategies, do puzzles, analyze games and moves for free and a lot more in king chess."/>
+          <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <meta property="og:title" content="king chess | the new standard of chess"/>
         </head>
         <body>
 
