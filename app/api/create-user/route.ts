@@ -3,6 +3,8 @@ import connectDB from "@/lib/connectDB"
 import { pusherServer } from "@/pusherConfig"
 import user from "@/models/User"
 import { NextResponse } from "next/server";
+import { TURBO_TRACE_DEFAULT_MEMORY_LIMIT } from "next/dist/shared/lib/constants";
+const { v4: uuidv4 } = require("uuid");
 
 export async function POST(req: Request) {
     await connectDB();
@@ -28,6 +30,7 @@ export async function POST(req: Request) {
             elo,
             email,
             photoURL,
+
             joined: new Date(),
             playedGames: [],
         })

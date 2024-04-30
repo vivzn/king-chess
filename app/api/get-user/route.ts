@@ -6,8 +6,14 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
     await connectDB();
-    const { email } = await req.json()
-    const data = await user.findOne({ email }).exec();
+    const data_: any = await req.json() as any;
+    let data;
+    if(data_?.id) {
+        data = await user.findById(data_?.id as string).exec();
+    } else {
+         data = await user.findOne(data_).exec();
+    }
+    
 
     return NextResponse.json(data);
 }

@@ -1,22 +1,25 @@
 import { RootContext } from '@/context';
+import { EllipsisHorizontalCircleIcon } from '@heroicons/react/24/outline';
 import { AdjustmentsHorizontalIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
 
 export default function UserDefault({ user, bg, border }: any) {
+    const router = useRouter();
     const [user_, setUser] = React.useContext(RootContext).user;
     return (
-        <div style={bg && {backgroundColor: bg}} className={`flex justify-between items-center hover:brightness-[1.1] cursor-pointer trans space-x-4 pr-5 rounded-full px-[10px] py-[10px] ${bg ? `` : "bg-slate-700"} ${border && "border-2 border-slate-600"}`}>
+        <div onClick={() => router.push(`/users/${user?._id}`)} style={bg && {backgroundColor: bg}} className={`flex justify-between items-center hover:brightness-[1.1] cursor-pointer trans space-x-4 pr-5 rounded-full px-[10px] py-[10px] ${bg ? `` : "bg-slate-700"} ${border && "border-2 border-slate-600"}`}>
             <div className='flex items-center space-x-4'>
                 <img className='rounded-full border-slate-500 w-[40px] h-[40px]' src={user?.photoURL} />
 
-                <div className='flex flex-col'>
+                <div className='flex flex-col space-y-1'>
                     <span className="font-bold text-white text-[14px]">{user?.name.substring(0, 12).toLowerCase()}</span>
-                    <span className="font-semibold text-slate-500 text-[12px]">{user?.email.substring(0, 15).toLowerCase()}</span>
+                    <span className="font-semibold text-violet-300 text-[12px]">{user?.elo} elo</span>
                 </div>
             </div>
 
-            {user?.email == user_?.email ? <PencilSquareIcon className='w-6 h-6 text-violet-300' /> : <AdjustmentsHorizontalIcon className='w-6 h-6 text-violet-300' />}
+            <EllipsisHorizontalCircleIcon className='w-6 h-6 text-slate-500' />
 
         </div>
     );

@@ -2,7 +2,7 @@ import { AcademicCapIcon, ArchiveBoxIcon, BookmarkIcon, ChartBarIcon, CpuChipIco
 import Tippy from '@tippyjs/react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import MyCustomTip from './mycustomtip';
 import { RootContext } from '@/context';
 import { ChevronDownIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -41,8 +41,13 @@ export function Dashboard() {
     } else {
       throw new Error("something wenrt wortjng ")
       setLoad(false);
+
+
     }
   }
+
+  const [searchTerm, setSearchTerm] = useState<any>("");
+
   return (
     <div className='w-full h-full'>
       <div className='py-20 w-full h-full  px-[160px] flex flex-col space-y-6 overflow-y-scroll simpleScroll'>
@@ -57,7 +62,11 @@ export function Dashboard() {
         </div>
         <div className='rounded-full w-full  bg-slate-800 p-3 px-3 pl-4 flex space-x-4  items-center'>
           <MagnifyingGlassIcon className='w-6 h-6 text-slate-500 stroke-[2.5]' />
-          <input className='bg-transparent h-full w-full outline-none focus:outline-none placeholder:text-slate-500 text-white font-semibold' placeholder="search for users" />
+          <form className='w-full' onSubmit={() => {
+            router.push(`/users/${searchTerm}`);
+          }}>
+            <input value={searchTerm} onChange={(e) => setSearchTerm(e?.target.value)} className='bg-transparent h-full w-full outline-none focus:outline-none placeholder:text-slate-500 text-white font-semibold' placeholder="search for a user via id" />
+          </form>
           <div className='flex items-center space-x-2 rounded-full p-2 px-2 bg-slate-600'>
             <ChevronDownIcon className='w-4 h-4 text-slate-400 stroke-[2.5]' />
             <span className="text-slate-400 font-semibold leading-[6px] translate-y-[-0px]">users</span>
