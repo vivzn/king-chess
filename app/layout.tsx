@@ -63,7 +63,9 @@ export default function RootLayout({
   }, [])
 
   
-  const pathname = usePathname();
+  if(process.env.NODE_ENV == 'production') {
+    return (<div>under maintenance</div>)
+  }
 
   return (
     <RootContext.Provider value={{

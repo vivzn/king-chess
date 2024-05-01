@@ -111,7 +111,7 @@ export function Dashboard() {
 
         </div>
         <div className='flex flex-col space-y-6'>
-          <div className='flex items-center space-x-4 w-full justify-between bg-slate-600 p-4 rounded-t-2xl rounded-b-md'>
+          <div className='flex items-center space-x-4 w-full justify-between bg-slate-700 p-4 rounded-t-2xl rounded-b-md'>
             <div className='flex items-center space-x-4'>
               <BookmarkIcon className="w-8 h-8 text-amber-300" />
               <span className='text-[22px] font-semibold text-white'>available lessons</span>
