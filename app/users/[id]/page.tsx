@@ -34,12 +34,12 @@ export default function Users() {
                 <UserDefault user={thisUser} />
 
                 <div className='flex space-y-2 flex-col'>
-                    <h1 className='text-xl'>{thisUser?.name}'s elo</h1>
+                    <h1 className='text-xl'>{thisUser?.name}&apos;s elo</h1>
                     <span className='text-indigo-300 text-2xl'>{thisUser?.elo}</span>
                 </div>
 
                 <div className='flex space-y-2 flex-col'>
-                    <h1 className='text-xl'>{thisUser?.name}'s matches played</h1>
+                    <h1 className='text-xl'>{thisUser?.name}&apos;s matches played</h1>
                     <span className='text-indigo-300 text-2xl'>this feature is coming soon</span>
                 </div>
 
