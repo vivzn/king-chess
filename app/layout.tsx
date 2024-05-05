@@ -63,10 +63,6 @@ export default function RootLayout({
     })
   }, [])
 
-  
-  if(process.env.NODE_ENV == 'production') {
-    return;
-  }
 
   return (
     <RootContext.Provider value={{
