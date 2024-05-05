@@ -10,7 +10,7 @@ import { Chess } from "chess.js";
 import { nanoid } from "nanoid";
 import Loading from "@/components/loading";
 import Error from "@/components/error";
-import { ArrowDownIcon, ArrowsPointingOutIcon, ArrowsUpDownIcon, ChatBubbleOvalLeftIcon, FlagIcon, PaperClipIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowDownIcon, ArrowsPointingOutIcon, ArrowsUpDownIcon, ChatBubbleOvalLeftIcon, CheckIcon, FlagIcon, PaperClipIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Bars3BottomLeftIcon, BoltIcon, BoltSlashIcon, FlagIcon as FlagIconSolid, SpeakerWaveIcon, WrenchScrewdriverIcon } from "@heroicons/react/24/solid";
 import Tippy from "@tippyjs/react";
 import MyCustomTip from "@/components/mycustomtip";
@@ -18,6 +18,7 @@ import useSWR from "swr";
 import WaitForRival from "@/components/waitForRival";
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
 import { RootContext } from "@/context";
+import toast from "react-hot-toast";
 
 enum playerEnum {
   Loader,
@@ -254,9 +255,74 @@ export default function Game() {
 
     pusherClient.bind('msg', msgHandler)
 
+    const drawHandler = (data: any) => {
+
+      if (data?.sessionID == pusherClient.sessionID) {
+
+      } else {
+        if (data?.data) {
+          const toastId = toast.custom(
+            <div className="bg-slate-600 p-4 flex items-center space-y-4 flex-col rounded-md text-black">
+              <p className="text-slate-300">
+                <span className="font-semibold">{opponent?.name}</span> asked for
+                draw
+              </p>
+              <div className="flex space-x-4 items-center">
+                <button
+                  onClick={() => toast.dismiss(toastId)}
+                  className="px-6 p-2 bg-red-400 ease-in-out transition-all duration-200 rounded-xl"
+                >
+                  <XMarkIcon className="w-6 h-6 stroke-[2.5] text-white" />
+                </button>
+                <button
+                  onClick={async () => {
+                    toast.dismiss(toastId);
+
+                    setGameModule({
+                      method: "draw",
+                      winnner: "-",
+                    });
+
+                    if (data?.data?.gameStatus == "finished") return;
+
+                    axios.post('/api/update-game', {
+                      _id: pathname, update: {
+                        winner: {
+                          winner: "-",
+                          method: "draw",
+                        },
+                        gameStatus: "finished",
+                      }
+                    }).then((data: any) => {
+                      // console.log("YOU are added as W")
+                    })
+
+                    // const ended = await fetchEditGame({
+                    //   ended: {
+                    //     endedBy: "Draw",
+                    //     wonBy: "-",
+                    //   },
+                    // });
+                  }}
+                  className="px-6 p-2 bg-green-400 ease-in-out transition-all duration-200 rounded-xl"
+                >
+                  <CheckIcon className="w-6 h-6 stroke-[2.5] text-white" />
+                </button>
+              </div>
+            </div>,
+            { position: "bottom-center", duration: 5000 }
+          );
+        }
+      }
+
+    }
+
+    pusherClient.bind('draw', drawHandler)
+
     return () => {
       pusherClient.unsubscribe(pathname as string)
       pusherClient.unbind('msg', msgHandler);
+      pusherClient.unbind('draw', drawHandler);
       pusherClient.unbind('move', moveHandler);
     }
   }, []);
@@ -315,6 +381,32 @@ export default function Game() {
 
   const [gameModule, setGameModule] = useState<any>(null);
 
+  function getRandomNumber(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  const [isCooldown, setIsCooldown] = useState<any>(false);
+  const giveEmElo = () => {
+    const blackGets = "b" == game?.main?.turn() ? -getRandomNumber(8, 12) : getRandomNumber(8, 12);
+    const whiteGets = "w" == game?.main?.turn() ? -getRandomNumber(8, 12) : getRandomNumber(8, 12);
+    const blackIs = data?.data?.members?.filter((member: any) => member.side == "b")[0].user;
+    const whiteIs = data?.data?.members?.filter((member: any) => member.side == "w")[0].user;
+
+    
+    const iduje= toast.loading("changing players trophies");
+
+    axios.post('/api/update-user', {
+      email: whiteIs, increment: whiteGets
+    }).then((d) => {
+      axios.post('/api/update-user', {
+        email: blackIs, increment: blackGets
+      })
+    })
+
+    toast.dismiss(iduje);
+
+    toast.success("player trophies have been updated")
+  }
   useEffect(() => {
     if (game?.main) {
       if (game.main?.isCheckmate()) {
@@ -335,6 +427,8 @@ export default function Game() {
           }
         }).then((data: any) => {
           // console.log("YOU are added as W")
+          // if(data?.winner?.)
+          giveEmElo();
         })
       }
 
@@ -427,13 +521,15 @@ export default function Game() {
 
   }
 
+
   return (
     <div className="w-full h-screen flex flex-grow-[1]">
+     
       {showScroll && <div id="scroller" className="w-8 h-8 rounded-full bottom-0 bg-white z-[10] grid place-content-center absolute ml-4 mb-2 shadow-2xl animate-bounce">
         <ArrowDownIcon className="w-5 h-5 stroke-[3] text-violet-400" />
 
         <p className="absolute font-bold text-white w-[200px] space-x-1 ml-[38px] mt-[px] bg-slate-600 rounded-full p-1 justify-center flex">
-          <span>Scroll down to chat</span>
+          <span>scroll down to chat</span>
           <XMarkIcon onClick={() => setShowScroll(false)} className="w-6 hover:scale-110 cursor-pointer h-6 stroke-[2.5] text-slate-400" />
         </p>
       </div>}
@@ -538,9 +634,10 @@ export default function Game() {
                         }
                       }).then((data: any) => {
                         // console.log("YOU are added as W")
+                        giveEmElo();
                       })
                     }
-                  }} className="bg-red-500 text-white font-semibold text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-full trans cursor-pointer">
+                  }} className="bg-red-500 text-white font-semibold  trans hover:brightness-90 text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-full trans cursor-pointer">
                     {/* <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" /> */}
                     <FlagIconSolid className="w-6 h-6 text-white rotate-[15deg] stroke-[2.5]" />
                     <span>resign</span>
@@ -548,14 +645,28 @@ export default function Game() {
 
                   </div>
                 </Tippy>}
-                {data?.data?.gameStatus == "playing" && <Tippy content={<MyCustomTip text={"WIP coming soon"} />}>
-                  <div className="bg-amber-500 text-white font-semibold text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-full trans cursor-pointer">
+                {data?.data?.gameStatus == "playing" && <Tippy content={<MyCustomTip text={"ask for draw"} />}>
+                  <button onClick={async () => {
+                    if (!isCooldown) {
+                      // Send the request here
+                      toast.success("you have sent a draw request")
+                      await sendMove({ data: "draw", sessionID: pusherClient?.sessionID }, pathname, "draw");
+
+                      // Set the cooldown to true
+                      setIsCooldown(true);
+
+                      // Reset the cooldown after 15 seconds
+                      setTimeout(() => {
+                        setIsCooldown(false);
+                      }, 15000);
+                    }
+                  }} disabled={isCooldown} className="bg-amber-500 disabled:brightness-[0.7] disabled:cursor-default text-white trans hover:brightness-90 font-semibold text-[18px] space-x-4 p-4 items-center justify-center flex trans rounded-full trans cursor-pointer">
                     {/* <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" /> */}
                     <ArrowsUpDownIcon className="w-6 h-6 text-white stroke-[2.5]" />
                     <span>draw?</span>
-                    {/* <FlagIcon className="w-4 h-4 text-red-200 rotate-[15deg] stroke-[2.5]" /> */}
+                    {/* <FlagIcon className="w-4 h-4 tex    t-red-200 rotate-[15deg] stroke-[2.5]" /> */}
 
-                  </div>
+                  </button>
                 </Tippy>}
 
                 {data?.data?.gameStatus == "finished" && (
@@ -575,7 +686,7 @@ export default function Game() {
               )}
             </div>
             <div className="w-full p-4 pt-0 border-r-2 border-white/5">
-              <div className="w-full h-full max-h-full flex flex-col flex-grow-[1] p-4 space-y-4 border-2 border-white/5 rounded-full">  <div className="w-full h-fit flex-grow-[1] rounded-full flex space-x-4 p-3 placeholder:font-semibold font-semibold bg-slate-600"> <ChatBubbleOvalLeftIcon className="w-6 h-6 stroke-[2.5] text-slate-300" /> <form className="w-full" onSubmit={submitMsg}> <input onChange={(e) => setMsg(e?.target.value)} value={msg} className="bg-transparent focus:outline-none outline-none text-white w-full h-full" placeholder="game chat" /> </form> </div> <div className="w-full h-[150px] overflow-y-scroll simpleScroll space-y-2"> {msgList && msgList.map((msg: any, index: any) => (<div key={index} className="space-x-[8px] w-full h-fit"> <span className="font-semibold text-white">{msg?.user}:</span> <span className="font-semibold text-slate-400">{msg?.text}</span> </div>))} </div> </div>
+              <div className="w-full h-full max-h-full flex flex-col flex-grow-[1] p-4 space-y-4 border-2 border-white/5 rounded-xl">  <div className="w-full h-fit flex-grow-[1] rounded-full flex space-x-4 p-3 placeholder:font-semibold font-semibold bg-slate-600"> <ChatBubbleOvalLeftIcon className="w-6 h-6 stroke-[2.5] text-slate-300" /> <form className="w-full" onSubmit={submitMsg}> <input onChange={(e) => setMsg(e?.target.value)} value={msg} className="bg-transparent focus:outline-none outline-none text-white w-full h-full" placeholder="game chat" /> </form> </div> <div className="w-full h-[150px] overflow-y-scroll simpleScroll space-y-2"> {msgList && msgList.map((msg: any, index: any) => (<div key={index} className="space-x-[8px] w-full h-fit"> <span className="font-semibold text-white">{msg?.user}:</span> <span className="font-semibold text-slate-400">{msg?.text}</span> </div>))} </div> </div>
             </div>
           </div>
 
@@ -601,10 +712,10 @@ export default function Game() {
 
 
 
-                  <fieldset className="flex translate-y-[-7px] items-center gap-4 p-4 rounded-full bg-slate-700">
+                  <fieldset className="flex translate-y-[-7px] items-center gap-4 p-4 pt-2 rounded-xl bg-slate-700">
                     <legend className="font-bold text-white">playing</legend>
-                    <div className="absolute translate-x-[-30px] translate-y-[-48px] text-bold items-center text-amber-500 space-x-2 flex">
-                      <BoltIcon className="w-7 h-7 text-amber-500" />
+                    <div className="absolute translate-x-[-30px] translate-y-[-46px] text-bold items-center text-violet-400 space-x-2 flex">
+                      <BoltIcon className="w-7 h-7 text-violet-400" />
 
                     </div>
                     <Image alt="opponent" width={50} className="rounded-full border-slate-white/5" height={50} src={opponent?.photoURL} />

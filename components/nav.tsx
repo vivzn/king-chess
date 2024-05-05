@@ -1,18 +1,19 @@
 import { RootContext } from '@/context';
-import { auth as authFB } from '@/firebase';
+import { auth, auth as authFB } from '@/firebase';
 import { ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ChatBubbleOvalLeftIcon, CogIcon, InboxStackIcon } from '@heroicons/react/24/outline';
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
-import { ArrowLeftCircleIcon, Bars3Icon, CpuChipIcon, EnvelopeIcon, ArchiveBoxIcon, InformationCircleIcon, PuzzlePieceIcon, UserCircleIcon, EllipsisHorizontalCircleIcon, UserIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
+import { ArrowLeftCircleIcon, Bars3Icon, CpuChipIcon, EnvelopeIcon, ArchiveBoxIcon, InformationCircleIcon, PuzzlePieceIcon, UserCircleIcon, EllipsisHorizontalCircleIcon, UserIcon, PencilSquareIcon, ComputerDesktopIcon } from '@heroicons/react/24/solid';
 import { SparklesIcon } from '@heroicons/react/24/solid';
 import { CubeTransparentIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import * as React from 'react';
 import UserDefault from './userDefault';
 
 export function Nav() {
     const router = useRouter();
+    const pathname = usePathname();
     const [user, setUser] = React.useContext<any>(RootContext).user;
 
     const signOut = () => {
@@ -42,7 +43,7 @@ export function Nav() {
                         </div>
 
                         <div onClick={() => router.push("/")} className={`flex gap-6 items-center group cursor-pointer`}>
-                            {window?.location?.pathname == "/" && <div className='w-[4px] left-0 h-8 rounded-r-xl bg-violet-300 absolute'>
+                            {pathname == "/" && <div className='w-[4px] left-0 h-8 rounded-r-xl bg-violet-300 absolute'>
                             </div>}
                             <ArchiveBoxIcon className="w-[24px] h-[24px] ml-[3px] stroke-[2] text-slate-600 group-hover:text-violet-300 trans" />
                             <span className="font-[600] text-[18px] text-slate-500 group-hover:text-slate-200 trans">dashboard</span>
@@ -52,22 +53,51 @@ export function Nav() {
                             <ChatBubbleOvalLeftIcon className="w-[24px] h-[24px] ml-[3px] stroke-[2] text-slate-600 group-hover:text-violet-300 trans" />
                             <span className="font-[600] text-[18px] text-slate-500 group-hover:text-slate-200 trans">my dms</span>
                         </div> */}
-                        <div onClick={() => router.push("/my-games")} className='flex space-x-6 items-center group cursor-pointer'>
-                            <InboxStackIcon className="w-[24px] h-[24px] ml-[3px] stroke-[2] text-slate-600 group-hover:text-violet-300 trans" />
-                            <span className="font-[600] text-[18px] text-slate-500 group-hover:text-slate-200 trans">my games</span>
+                        <div onClick={() => router.push("/puzzles")} className={`flex gap-6 items-center group cursor-pointer`}>
+                            {pathname == "/puzzles" && <div className='w-[4px] left-0 h-8 rounded-r-xl bg-violet-300 absolute'>
+                            </div>}
+                            <PuzzlePieceIcon className="w-[24px] h-[24px] ml-[3px] stroke-[2] text-slate-600 group-hover:text-violet-300 trans" />
+                            <span className="font-[600] text-[18px] text-slate-500 group-hover:text-slate-200 trans">puzzles</span>
                         </div>
-                        <div onClick={() => router.push("/settings")} className='flex space-x-6 items-center group cursor-pointer'>
-                            <CogIcon className="w-[24px] h-[24px] ml-[3px] stroke-[2] text-slate-600 group-hover:text-violet-300 trans" />
-                            <span className="font-[600] text-[18px] text-slate-500 group-hover:text-slate-200 trans">settings</span>
+
+                        <div onClick={() => router.push("/bots")} className={`flex gap-6 items-center group cursor-pointer`}>
+                            {pathname == "/bots" && <div className='w-[4px] left-0 h-8 rounded-r-xl bg-violet-300 absolute'>
+                            </div>}
+                            <CpuChipIcon className="w-[24px] h-[24px] ml-[3px] stroke-[2] text-slate-600 group-hover:text-violet-300 trans" />
+                            <span className="font-[600] text-[18px] text-slate-500 group-hover:text-slate-200 trans">bots</span>
+                        </div>
+
+                        <div onClick={() => router.push("/analyze")} className={`flex gap-6 items-center group cursor-pointer`}>
+                            {pathname == "/analyze" && <div className='w-[4px] left-0 h-8 rounded-r-xl bg-violet-300 absolute'>
+                            </div>}
+                            <ComputerDesktopIcon className="w-[24px] h-[24px] ml-[3px] stroke-[2] text-slate-600 group-hover:text-violet-300 trans" />
+                            <span className="font-[600] text-[18px] text-slate-500 group-hover:text-slate-200 trans">analyze</span>
+                        </div>
+
+                        <div onClick={() => router.push(`/users/${user?._id}`)} className={`flex gap-6 items-center group cursor-pointer`}>
+                            {pathname == `/users/${user?._id}` && <div className='w-[4px] left-0 h-8 rounded-r-xl bg-violet-300 absolute'>
+                            </div>}
+                            <UserIcon className="w-[24px] h-[24px] ml-[3px] stroke-[2] text-slate-600 group-hover:text-violet-300 trans" />
+                            <span className="font-[600] text-[18px] text-slate-500 group-hover:text-slate-200 trans">my profile</span>
                         </div>
 
                     </div>
 
-                    <div className='flex items-center space-x-6 w-full'>
+                    <div className='flex flex-col space-y-3  w-full'>
+                        <div className='flex items-center space-x-6 w-full'>
 
-                        <div className='w-full h-fit'>
-                            <UserDefault user={user} />
+                            <div className='w-full h-fit'>
+                                <UserDefault user={user} />
+                            </div>
                         </div>
+                        <button onClick={() => {
+                            auth.signOut().then(() => {
+                                setUser(null);
+                                router.refresh();
+                            })
+                            
+                        }} className='bg-violet-400/20 p-1 rounded-full text-violet-400 font-semibold'>logout</button>
+
                     </div>
                 </div>
             </div>

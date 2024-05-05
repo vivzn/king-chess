@@ -15,6 +15,7 @@ import { Nav } from "@/components/nav";
 import { RootContext } from "@/context";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({
   children,
@@ -64,7 +65,7 @@ export default function RootLayout({
 
   
   if(process.env.NODE_ENV == 'production') {
-    return (<div>under maintenance</div>)
+    return;
   }
 
   return (
@@ -74,6 +75,7 @@ export default function RootLayout({
     }}>
       <html lang="en">
         <Analytics />
+        <Toaster/>
         <SpeedInsights/>
         <head>
           <title>king chess | the new standard of chess</title>
@@ -82,6 +84,8 @@ export default function RootLayout({
           <meta name="google-site-verification" content="1R5UZJrtxamkK8ZPdUhvvOXCBsq1gjISmGTea768Tus" />
           <meta name="description" content="play, learn, rank, and more - 1v1 your friends with a link, rank up, play bots, learn strategies, do puzzles, analyze games and moves for free and a lot more in king chess."/>
           <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9843003544372146"
+     crossOrigin="anonymous"></script>
           <meta property="og:title" content="king chess | the new standard of chess"/>
         </head>
         <body>
