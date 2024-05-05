@@ -183,7 +183,7 @@ export default function Analyze() {
     (move: any, index: any, self: any) =>
       index === self.findIndex((m: any) => m.moves === move.moves)
   ))?.map(({ moves, cpData }: any) => (
-                        <div onClick={() => {
+                        <div key={moves} onClick={() => {
                             let toGoto = moves.split(" ")[0];
                             let gameCopy = game?.main;
                             gameCopy.move(toGoto)
